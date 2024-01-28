@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>SMS Web App</title>
+    <!-- <link rel="stylesheet" href="styles.css" /> -->
+  </head>
+  <body>
+    <div id="root">
+      <h1>SMS Web App</h1>
+      <!--4 fields for to number, message and link and send button-->
+      <form>
+        <label for="to">To:</label>
+        <input type="tel" id="to" pattern="[0-9]{10}" />
+        <label for="message">Message:</label>
+        <input type="text" id="message" />
+        <label for="link">Link:</label>
+        <select id="link"></select>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
