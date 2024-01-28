@@ -2,10 +2,11 @@ send_message <- function(toNumber, fromNumber = "+15005550006", customMessage, v
 source("./assets/video_list.R")
 ## search video list for url where videoID matches videoSelection
 videoURL <- video_list[[which(sapply(video_list, function(x) x$videoID ==  videoSelection))]]$videoURL
+videoDescription <- video_list[[which(sapply(video_list, function(x) x$videoID ==  videoSelection))]]$videoDescription
 twilio_response <- twilio::tw_send_message(
 to = toNumber,
 from = fromNumber,
-body = paste0(customMessage, " ", videoURL))
+body = paste0(customMessage, " ", videoDescription, ": ",videoURL))
 print(twilio_response)
 return("success")
 }

@@ -1,7 +1,8 @@
 // fetch video list
-const url = 'http://localhost:8000'
+const url = document.URL
 
-  fetch(url+'/videoList')
+console.log(url)
+  fetch(url+'videoList')
     .then(response => response.json())
     .then(data => {
       // append options to link select with id in the value and description in the text
@@ -22,7 +23,7 @@ form.addEventListener('submit', (event) => {
   const to = document.getElementById('to').value
   const message = document.getElementById('message').value
   const link = document.getElementById('link').value
-  fetch(url+'/sendMessage', {
+  fetch(url+'sendMessage', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

@@ -32,5 +32,7 @@ videoList <- function() {
 #* @param customMessage
 #* @param videoSelection
 sendMessage <- function(toNumber, customMessage, videoSelection) {
-  send_message(toNumber, fromNumber = "+15005550006", customMessage, videoSelection)
+  source("./backend/send_message.R")
+  # send_message(toNumber, fromNumber = "+18446260787", customMessage, videoSelection) ## live number
+  send_message(toNumber, fromNumber = "+15005550006", customMessage, videoSelection) ## test number
 }

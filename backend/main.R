@@ -1,5 +1,2 @@
-library(plumber)
-source("./send_message.R")
-
-pr("api.R") |>
-  pr_run(port = 8000)
+plumber::pr("./backend/api.R") |>
+  plumber::pr_run(port = 8000)
