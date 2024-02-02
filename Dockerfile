@@ -27,6 +27,6 @@ FROM rocker/r-base:latest
 WORKDIR /project
 COPY --from=base /project .
 
-CMD R -e 'lapply(system("ls ./backend/functions/*.R", intern = TRUE), source); plumber::pr("./backend/api.R") |>plumber::pr_run(host = "0.0.0.0", port = 8000)'
+CMD R -e 'plumber::pr("./backend/api.R") |>plumber::pr_run(host = "0.0.0.0", port = 8000)'
 
 EXPOSE 8000
