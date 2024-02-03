@@ -1,8 +1,6 @@
 // fetch video list
-const url = document.URL
 
-console.log(url)
-  fetch(url+'videoList')
+  fetch('videoList')
     .then(response => response.json())
     .then(data => {
       // append options to link select with id in the value and description in the text
@@ -23,7 +21,7 @@ form.addEventListener('submit', (event) => {
   const to = document.getElementById('to').value
   const message = document.getElementById('message').value
   const link = document.getElementById('link').value
-  fetch(url+'sendMessage', {
+  fetch('sendMessage', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -33,5 +31,13 @@ form.addEventListener('submit', (event) => {
       customMessage: message,
       videoSelection: link
     })
+  })
+  //expect index.html redirect and navigate to index.html
+  .then(response => {
+    if (response.redirected) {
+      window.location.href = response.url
+    } else {
+      console.log(response)
+    }
   })
 })

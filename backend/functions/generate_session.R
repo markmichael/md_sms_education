@@ -1,15 +1,15 @@
 generate_session <- function(uuid) {
   ### connect to database
   con <- connect_db()
-    session <- stringi::stri_rand_strings(1, 32)
+    session <- random_cookie_key()
     ### store session in session table
-    tbl(con, "restricted.session") |>
+    tbl(con, in_schema("restricted", "session")) |>
       rows_upsert(
         data.frame(
-          uuid = user$uuid,
-          session = session,
-          created_at = Sys.time()
-        ),
+          uuid = uuid,
+          session_token = session,
+          session_create_time = Sys.time()
+        ) |> copy_inline(con, df = _),
         by = "uuid",
         in_place = TRUE
       )

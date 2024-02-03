@@ -32,6 +32,6 @@ COPY backend/ ./backend
 COPY frontend/ ./frontend
 COPY db_setup/ ./db_setup
 COPY renv.lock renv.lock
-CMD R -e 'library(dbplyr);lapply(system("ls /project/backend/functions/*.R", intern = TRUE), source); plumber::pr("/project/backend/api.R") |>plumber::pr_run(host = "0.0.0.0", port = 8000)'
+CMD R -e 'library(dbplyr);library(dplyr);lapply(system("ls /project/backend/functions/*.R", intern = TRUE), source); plumber::pr("/project/backend/api.R") |>plumber::pr_run(host = "0.0.0.0", port = 8000)'
 
 EXPOSE 8000

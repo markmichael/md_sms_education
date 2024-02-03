@@ -19,7 +19,7 @@ last_name VARCHAR(255) NOT NULL
 -- create session table
 CREATE TABLE IF NOT EXISTS restricted.session (
 uuid CHAR(36) PRIMARY KEY NOT NULL,
-session_token CHAR(32) NOT NULL,
+session_token CHAR(64) NOT NULL,
 session_create_time TIMESTAMP NOT NULL
 );
 
