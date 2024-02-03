@@ -38,14 +38,14 @@ sendMessage <- function(toNumber, customMessage, videoSelection, req, res) {
     res$setHeader("Location", "/login.html")
     return(res)
   } else {
-    uuid_role <- check_session(session)
-    if (length(uuid_role) == 1) {
+    uuid_admin <- check_session(session)
+    if (length(uuid_admin) == 1) {
       res$status <- 302
       res$setHeader("Location", "/login.html")
       return(res)
     } else {
       send_message(toNumber, fromNumber = "+15005550006", customMessage, videoSelection) ## test number
-      session <- generate_session(uuis_role$uuid)
+      session <- generate_session(uuid_admin$uuid)
       res$setCookie(name = "session", value = session, path = "/", http = TRUE)
       res$body <- "success"
       return(res)
@@ -59,7 +59,7 @@ sendMessage <- function(toNumber, customMessage, videoSelection, req, res) {
 #* @param firstName
 #* @param lastName
 #* @param password
-createUser <- function(email, firstName, lastName, password, admin = FALSE, req, res) {
+createUser <- function(email, firstName, lastName, password, admin, req, res) {
   ### check for valid session in request cookies
   session <- req$cookies$session
   if (is.null(session)) {
@@ -67,16 +67,17 @@ createUser <- function(email, firstName, lastName, password, admin = FALSE, req,
     res$setHeader("Location", "/login.html")
     return(res)
   } else {
-    uuid <- check_session(session)
-    if (length(uuid_admin) == 1 || !uuid_role$admin) {
+    uuid_admin <- check_session(session)
+    if (length(uuid_admin) == 1 || !uuid_admin$admin) {
       res$status <- 302
       res$setHeader("Location", "/login.html")
+      print("here i am")
       return(res)
     } else {
-      create_user(email, firstName, lastName, password, admin)
-      session <- generate_session(uuis_role$uuid)
+      a <- create_user(email, firstName, lastName, password, admin)
+      session <- generate_session(uuid_admin$uuid)
       res$setCookie(name = "session", value = session, path = "/", http = TRUE)
-      res$body <- "success"
+      res$body <- a
       return(res)
     }
   }
@@ -103,5 +104,30 @@ login_user <- function(username, password, res) {
       res$setHeader("Location", "/index.html")
     }
     return(res)
+  }
+}
+
+#* Add video
+#* @post /addVideo
+#* @param videoName
+#* @param videoLink
+addVideo <- function(videoName, videoLink, req, res) {
+  ### check for valid session in request cookies
+  session <- req$cookies$session
+  if (is.null(session)) {
+    res$status <- 302
+    res$setHeader("Location", "/login.html")
+    return(res)
+  } else {
+    uuid_admin <- check_session(session)
+    if (length(uuid_admin) == 1 || !uuid_admin$admin) {
+      res$status <- 302
+      res$setHeader("Location", "/login.html")
+      return(res)
+    } else {
+      a <- add_video(videoName, videoLink)
+      res$body <- a
+      return(res)
+    }
   }
 }

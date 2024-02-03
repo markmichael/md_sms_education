@@ -6,7 +6,6 @@
       // append options to link select with id in the value and description in the text
       const linkSelect = document.getElementById('link')
       for (const link in data) {
-        console.log(link)
         const option = document.createElement('option')
         option.value = data[link]['videoID']
         option.text = data[link]['videoDescription']

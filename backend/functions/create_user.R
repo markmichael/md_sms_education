@@ -1,15 +1,15 @@
-create_user <- function(email, first_name, last_name, passwordhash, admin) {
-  email <- email |> tolower()
+create_user <- function(email_in, first_name, last_name, passwordhash, admin = FALSE) {
+  email_in <- email_in |> tolower()
   ### connect to database
   con <- connect_db()
   ### check if email is already in database
   user_exist <- tbl(con, in_schema("restricted", "user")) |>
-    filter(email == email) |>
+    filter(email == email_in) |>
     collect() |>
     nrow()
   if (user_exist == 0) {
     ### create auth hash
-    emailhash <- openssl::md5(email)
+    emailhash <- openssl::md5(email_in)
     user_access_hash <- openssl::sha512(paste0(emailhash, passwordhash)) |>
       as.character()
 
@@ -31,7 +31,7 @@ create_user <- function(email, first_name, last_name, passwordhash, admin) {
       rows_insert(
         data.frame(
           uuid = uuid,
-          email = email,
+          email = email_in,
           first_name = first_name,
           last_name = last_name,
           admin = admin

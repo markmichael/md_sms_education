@@ -5,7 +5,7 @@
   </head>
   <body>
     <h1>New User</h1>
-    <form>
+    <form id="createUser">
       <label for="first_name">First Name:</label>
       <input type="text" id="first_name" />
       <label for="last_name">Last Name:</label>
@@ -14,8 +14,28 @@
       <input type="text" id="email" />
       <label for="password">Password:</label>
       <input type="password" id="password" />
+      <label for="admin">Admin:</label>
+      <input type="checkbox" id="admin" />
       <button type="submit">Create User</button>
     </form>
+    <h1>Add Video</h1>
+    <form id="addVideo">
+      <label for="name">Name:</label>
+      <input type="text" id="name" />
+      <label for="link">Link:</label>
+      <input type="text" id="videolink" />
+      <button type="submit">Add Video</button>
+    </form>
+    <h1>Send SMS</h1>
+      <form id = "sendMessage">
+        <label for="to">To:</label>
+        <input type="tel" id="to" pattern="[0-9]{10}" />
+        <label for="message">Message:</label>
+        <input type="text" id="message" />
+        <label for="link">Video:</label>
+        <select id="link"></select>
+        <button type="submit">Send</button>
+      </form>
     <script src="md5.min.js"></script>
     <script src="admin.js"></script>
   </body>
