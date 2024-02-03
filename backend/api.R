@@ -21,7 +21,7 @@ index <- function() {
 #* Get Video List
 #* @get /videoList
 videoList <- function() {
-  source("./assets/video_list.R")
+  video_list <- get_video_library()
   video_list
 }
 
@@ -38,20 +38,19 @@ sendMessage <- function(toNumber, customMessage, videoSelection, req, res) {
     res$setHeader("Location", "/login.html")
     return(res)
   } else {
-    uuid <- check_session(session)
-    if (uuid == "session not valid") {
+    uuid_role <- check_session(session)
+    if (length(uuid_role) == 1) {
       res$status <- 302
       res$setHeader("Location", "/login.html")
       return(res)
     } else {
-  send_message(toNumber, fromNumber = "+15005550006", customMessage, videoSelection) ## test number
-  session <- generate_session(uuid)
-  res$setCookie(name = "session", value = session, path = "/", http = TRUE)
-  res$body <- "success"
-  return(res)
-  }
-
-  }   # send_message(toNumber, fromNumber = "+18446260787", customMessage, videoSelection) ## live number
+      send_message(toNumber, fromNumber = "+15005550006", customMessage, videoSelection) ## test number
+      session <- generate_session(uuis_role$uuid)
+      res$setCookie(name = "session", value = session, path = "/", http = TRUE)
+      res$body <- "success"
+      return(res)
+    }
+  } # send_message(toNumber, fromNumber = "+18446260787", customMessage, videoSelection) ## live number
 }
 
 #* Create User
@@ -60,8 +59,27 @@ sendMessage <- function(toNumber, customMessage, videoSelection, req, res) {
 #* @param firstName
 #* @param lastName
 #* @param password
-createUser <- function(email, firstName, lastName, password) {
-  create_user(email, firstName, lastName, password)
+createUser <- function(email, firstName, lastName, password, admin = FALSE, req, res) {
+  ### check for valid session in request cookies
+  session <- req$cookies$session
+  if (is.null(session)) {
+    res$status <- 302
+    res$setHeader("Location", "/login.html")
+    return(res)
+  } else {
+    uuid <- check_session(session)
+    if (length(uuid_admin) == 1 || !uuid_role$admin) {
+      res$status <- 302
+      res$setHeader("Location", "/login.html")
+      return(res)
+    } else {
+      create_user(email, firstName, lastName, password, admin)
+      session <- generate_session(uuis_role$uuid)
+      res$setCookie(name = "session", value = session, path = "/", http = TRUE)
+      res$body <- "success"
+      return(res)
+    }
+  }
 }
 
 #* Login
@@ -71,13 +89,19 @@ createUser <- function(email, firstName, lastName, password) {
 #* @serializer html
 login_user <- function(username, password, res) {
   session <- login(username, password)
+  uuid_admin <- check_session(session)
   if (session == "Invalid Credentials") {
     return("Invalid Credentials")
   } else {
     ### set cookie
     res$setCookie(name = "session", value = session, path = "/", http = TRUE)
     res$status <- 302
-    res$setHeader("Location", "/index.html")
+    ### check if user is admin and redirect to admin page
+    if (uuid_admin$admin) {
+      res$setHeader("Location", "/admin.html")
+    } else {
+      res$setHeader("Location", "/index.html")
+    }
     return(res)
   }
 }

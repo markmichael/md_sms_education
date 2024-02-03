@@ -1,4 +1,4 @@
-create_user <- function(email, first_name, last_name, passwordhash) {
+create_user <- function(email, first_name, last_name, passwordhash, admin) {
   email <- email |> tolower()
   ### connect to database
   con <- connect_db()
@@ -33,7 +33,8 @@ create_user <- function(email, first_name, last_name, passwordhash) {
           uuid = uuid,
           email = email,
           first_name = first_name,
-          last_name = last_name
+          last_name = last_name,
+          admin = admin
         ) |> copy_inline(con, df = _),
         conflict = "ignore",
         in_place = TRUE
