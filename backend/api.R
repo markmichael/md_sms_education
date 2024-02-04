@@ -18,6 +18,60 @@ index <- function() {
   forward()
 }
 
+#* login page
+#* @get /login
+#* @serializer html
+login_page <- function() {
+  a <- readLines("../frontend/login.html") |> paste0(collapse = "")
+  return(a)
+}
+
+#* admin page
+#* @get /admin
+#* @serializer html
+admin_page <- function(req, res) {
+  ### check for valid session in request cookies
+  session <- req$cookies$session
+  if (is.null(session)) {
+    res$status <- 302
+    res$setHeader("Location", "/login")
+    return(res)
+  } else {
+    uuid_admin <- check_session(session)
+    if (length(uuid_admin) == 1 || !uuid_admin$admin) {
+      res$status <- 302
+      res$setHeader("Location", "/login")
+      return(res)
+    } else {
+      a <- readLines("../frontend/admin.html") |> paste0(collapse = "")
+      return(a)
+    }
+  }
+}
+
+#* Get regular user page
+#* @get /messagePortal
+#* @serializer html
+user_page <- function(req, res) {
+  ### check for valid session in request cookies
+  session <- req$cookies$session
+  if (is.null(session)) {
+    res$status <- 302
+    res$setHeader("Location", "/login")
+    return(res)
+  } else {
+    uuid_admin <- check_session(session)
+    if (length(uuid_admin) == 1) {
+      res$status <- 302
+      res$setHeader("Location", "/login")
+      return(res)
+    } else {
+      a <- readLines("../frontend/index") |> paste0(collapse = "")
+      return(a)
+    }
+  }
+}
+
 #* Get Video List
 #* @get /videoList
 videoList <- function() {
@@ -35,13 +89,13 @@ sendMessage <- function(toNumber, customMessage, videoSelection, req, res) {
   session <- req$cookies$session
   if (is.null(session)) {
     res$status <- 302
-    res$setHeader("Location", "/login.html")
+    res$setHeader("Location", "/login")
     return(res)
   } else {
     uuid_admin <- check_session(session)
     if (length(uuid_admin) == 1) {
       res$status <- 302
-      res$setHeader("Location", "/login.html")
+      res$setHeader("Location", "/login")
       return(res)
     } else {
       send_message(toNumber, fromNumber = Sys.getenv("TWILIO_FROM_NUMBER"), customMessage, videoSelection) ## test number
@@ -64,14 +118,14 @@ createUser <- function(email, firstName, lastName, password, admin, req, res) {
   session <- req$cookies$session
   if (is.null(session)) {
     res$status <- 302
-    res$setHeader("Location", "/login.html")
+    res$setHeader("Location", "/login")
     return(res)
   } else {
     uuid_admin <- check_session(session)
     print(uuid_admin)
     if (length(uuid_admin) == 1 || !uuid_admin$admin) {
       res$status <- 302
-      res$setHeader("Location", "/login.html")
+      res$setHeader("Location", "/login")
       print("here i am")
       return(res)
     } else {
@@ -85,7 +139,7 @@ createUser <- function(email, firstName, lastName, password, admin, req, res) {
 }
 
 #* Login
-#* @post /login
+#* @post /login_user
 #* @param username
 #* @param password
 #* @serializer html
@@ -100,9 +154,9 @@ login_user <- function(username, password, res) {
     res$status <- 302
     ### check if user is admin and redirect to admin page
     if (uuid_admin$admin) {
-      res$setHeader("Location", "/admin.html")
+      res$setHeader("Location", "/admin")
     } else {
-      res$setHeader("Location", "/index.html")
+      res$setHeader("Location", "/messagePortal")
     }
     return(res)
   }

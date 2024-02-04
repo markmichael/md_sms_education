@@ -275,7 +275,13 @@ function populateSendTemplateForm() {
   templateForm.appendChild(templateSelect)
   // get template list
   fetch('templateList')
-    .then(response => response.json())
+    .then(response => {
+      if (response.redirected) {
+        window.location.href = response.url
+      } else {
+        return response.json()
+      }
+    })
     .then(data => {
       // append options to template select with id in the value and description in the text
       for (const template in data) {
@@ -317,3 +323,33 @@ const submitHandler = (event) => {
       }
     })
 }
+document.addEventListener('DOMContentLoaded', function () {
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tabContent');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+            const tabId = this.id.replace('tab', '');
+            showTab(tabId);
+        });
+    });
+
+    function showTab(tabId) {
+        tabContents.forEach(content => {
+            content.style.display = 'none';
+        });
+
+        tabs.forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        const contentToShow = document.getElementById(`content${tabId}`);
+        const tabToHighlight = document.getElementById(`tab${tabId}`);
+
+        contentToShow.style.display = 'block';
+        tabToHighlight.classList.add('active');
+    }
+
+    // Show the default tab on page load
+    showTab('Templates');
+});

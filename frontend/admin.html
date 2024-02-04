@@ -1,46 +1,68 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>New User</title>
+    <title>Admin</title>
+    <link rel="stylesheet" href="stylesheet.css" />
   </head>
   <body>
-    <h1>New User</h1>
+    <div class = "tabs">
+      <div class = "tab" id = "tabUsers">Users</div>
+      <div class = "tab" id = "tabVideos">Videos</div>
+      <div class = "tab" id = "tabTemplates">Send Messages and Templates</div>
+
+    </div>
+    <div class = "tabContent" id = "contentUsers">
+    <h2>New User</h2>
     <form id="createUser">
       <label for="first_name">First Name:</label>
       <input type="text" id="first_name" />
+      <br><br>
       <label for="last_name">Last Name:</label>
       <input type="text" id="last_name" />
+      <br><br>
       <label for="email">Email:</label>
       <input type="text" id="email" />
+      <br><br>
       <label for="password">Password:</label>
       <input type="password" id="password" />
+      <br><br>
       <label for="admin">Admin:</label>
       <input type="checkbox" id="admin" />
+      <br><br>
       <button type="submit">Create User</button>
     </form>
-    <h1>Add Video</h1>
+    </div>
+    <div class = "tabContent" id = "contentVideos">
+    <h2>Add Video</h2>
     <form id="addVideo">
       <label for="name">Name:</label>
       <input type="text" id="name" />
+      <br><br>
       <label for="link">Link:</label>
       <input type="text" id="videolink" />
+      <br><br>
       <button type="submit">Add Video</button>
     </form>
-    <h1>Send SMS</h1>
+    </div>
+    <div class = "tabContent" id = "contentTemplates">
+    <h2>Send SMS</h2>
       <form id = "sendMessage">
         <label for="to">To:</label>
         <input type="tel" id="to" pattern="[0-9]{10}" />
+        <br><br>
         <label for="message">Message:</label>
         <input type="text" id="message" />
+        <br><br>
         <label for="link">Video:</label>
         <select id="link"></select>
         <button type="submit">Send</button>
       </form>
-      <h1>Send Templated SMS</h1>
+      <h2>Send Templated SMS</h2>
       <form id = "sendTemplate">
       </form>
       <h3>Template Preview</h3>
       <div id = "preview"></div>
+    </div>
     <script src="md5.min.js"></script>
     <script src="admin.js"></script>
   </body>

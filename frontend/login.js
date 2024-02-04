@@ -7,7 +7,7 @@ form.addEventListener('submit', (event) => {
   const hashedemail = md5(email.toLowerCase())
   const password = document.getElementById('password').value
   const hashedPassword = md5(password)
-  fetch('/login', {
+  fetch('/login_user', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
