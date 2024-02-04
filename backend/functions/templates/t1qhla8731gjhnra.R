@@ -3,8 +3,6 @@ template_parameters <- list(
     "Your child is scheduled for surgery with [Surgeon] at [Location] on [Date] at [Time]. Please arrive at [Time - 1 hr].\n",
     "Here is a video on how to prepare for the surgery:\n",
     "[videos1]\n",
-    "Here is a video on what to expect afer surgery:\n",
-    "[videos2]\n",
     "Please contact our office at [Phone] if you have any questions."
   ),
   Provider = list(
@@ -19,7 +17,6 @@ template_parameters <- list(
     "NW Surgery Center (4800 Federal Plaza Dr, Houston, TX 77092)"
   ),
   videos1 = "videos",
-  videos2 = "videos",
   Phone = "Phone"
 )
 
@@ -31,11 +28,6 @@ videos2 <- template_parameters$videos2
     filter(video_id == videos1) |>
     collect()
   videoURL1 <- video$video_link
-
-  video <- tbl(con, "video_library") |>
-    filter(video_id == videos2) |>
-    collect()
-  videoURL2 <- video$video_link
 
 message <- paste0(
   "Your child is scheduled for surgery with ",
@@ -54,8 +46,6 @@ message <- paste0(
   ".\n",
   "Here is a video on how to prepare for the surgery:\n",
   videoURL1,
-  "\nHere is a video on what to expect afer surgery:\n",
-  videoURL2,
   "\nPlease contact our office at ",
   template_parameters$Phone,
   " if you have any questions."

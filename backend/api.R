@@ -44,7 +44,7 @@ sendMessage <- function(toNumber, customMessage, videoSelection, req, res) {
       res$setHeader("Location", "/login.html")
       return(res)
     } else {
-      send_message(toNumber, fromNumber = "+15005550006", customMessage, videoSelection) ## test number
+      send_message(toNumber, fromNumber = Sys.getenv("TWILIO_FROM_NUMBER"), customMessage, videoSelection) ## test number
       session <- generate_session(uuid_admin$uuid)
       res$setCookie(name = "session", value = session, path = "/", http = TRUE)
       res$body <- "success"
@@ -173,7 +173,32 @@ templateDetails <- function(templateId, req, res) {
       return(res)
     } else {
       a <- get_template_details(templateId)
+      a$Preview <- gsub("\n", "<br>", a$Preview)
       return(a)
+    }
+  }
+}
+
+#* Send Template
+#* @post /sendTemplate
+#* @param templateParams
+sendTemplate <- function(templateParams, req, res) {
+  ### check for valid session in request cookies
+  session <- req$cookies$session
+  if (is.null(session)) {
+    res$status <- 302
+    res$setHeader("Location", "/login.html")
+    return(res)
+  } else {
+    uuid_admin <- check_session(session)
+    if (length(uuid_admin) == 1) {
+      res$status <- 302
+      res$setHeader("Location", "/login.html")
+      return(res)
+    } else {
+      a <- send_template(templateParams)
+      print(a)
+      return("success")
     }
   }
 }
