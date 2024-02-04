@@ -141,7 +141,7 @@ function fetchTemplateDetails(templateValue) {
       const preview = document.getElementById('preview')
       const templateForm = document.getElementById('sendTemplate')
       //clear everything after first child of sendTemplate
-      while(templateForm.children.length>1){
+      while (templateForm.children.length > 1) {
         templateForm.removeChild(templateForm.lastChild)
       }
 
@@ -255,35 +255,13 @@ function fetchTemplateDetails(templateValue) {
       submitButton.type = 'submit'
       submitButton.textContent = 'Send'
       templateForm.appendChild(submitButton)
-
-      // submit template form
-      templateForm.addEventListener('submit', (event) => {
-        event.preventDefault()
-        const formData = new FormData(templateForm)
-        const formDataObject = {}
-        for (const [key, value] of formData.entries()) {
-          formDataObject[key] = value
-        }
-        const formDataWrapper = {
-          templateParams: formDataObject
-        }
-        fetch('sendTemplate', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formDataWrapper)
-        })
-          //expect index.html redirect and navigate to index.html
-          .then(response => {
-            if (response.redirected) {
-              window.location.href = response.url
-            } else {
-              console.log(response)
-            }
-          })
-      })
+      // remove event listeners from submit button
+      submitButton.removeEventListener('submit', submitHandler)
     })
+  // submit template form
+  templateForm.addEventListener('submit', submitHandler)
+
+
 }
 
 function populateSendTemplateForm() {
@@ -306,9 +284,36 @@ function populateSendTemplateForm() {
         templateOption.text = data[template]['template_name']
         templateSelect.appendChild(templateOption)
       }
-        templateSelect.addEventListener('change', () => {
-          fetchTemplateDetails(templateSelect.value)
-        })
-          fetchTemplateDetails(templateSelect.value)
+      templateSelect.addEventListener('change', () => {
+        fetchTemplateDetails(templateSelect.value)
+      })
+      fetchTemplateDetails(templateSelect.value)
+    })
+}
+
+const submitHandler = (event) => {
+  event.preventDefault()
+  const formData = new FormData(templateForm)
+  const formDataObject = {}
+  for (const [key, value] of formData.entries()) {
+    formDataObject[key] = value
+  }
+  const formDataWrapper = {
+    templateParams: formDataObject
+  }
+  fetch('sendTemplate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formDataWrapper)
+  })
+    //expect index.html redirect and navigate to index.html
+    .then(response => {
+      if (response.redirected) {
+        window.location.href = response.url
+      } else {
+        console.log(response)
+      }
     })
 }
