@@ -11,7 +11,7 @@ check_session <- function(session) {
     ### check how much time has passed since session creation
     if (difftime(Sys.time(),
       session_check$session_create_time,
-      units = "mins"
+      units = "hours"
     ) < Sys.getenv("SESSION_EXPIRE_TIME")) {
       return(list(uuid = session_check$uuid,
                   admin = session_check$admin))
