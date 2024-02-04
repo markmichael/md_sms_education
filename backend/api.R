@@ -68,6 +68,7 @@ createUser <- function(email, firstName, lastName, password, admin, req, res) {
     return(res)
   } else {
     uuid_admin <- check_session(session)
+    print(uuid_admin)
     if (length(uuid_admin) == 1 || !uuid_admin$admin) {
       res$status <- 302
       res$setHeader("Location", "/login.html")
@@ -128,6 +129,51 @@ addVideo <- function(videoName, videoLink, req, res) {
       a <- add_video(videoName, videoLink)
       res$body <- a
       return(res)
+    }
+  }
+}
+
+#* Fetch template list
+#* @get /templateList
+templateList <- function(req, res) {
+  ### check for valid session in request cookies
+  session <- req$cookies$session
+  if (is.null(session)) {
+    res$status <- 302
+    res$setHeader("Location", "/login.html")
+    return(res)
+  } else {
+    uuid_admin <- check_session(session)
+    if (length(uuid_admin) == 1) {
+      res$status <- 302
+      res$setHeader("Location", "/login.html")
+      return(res)
+    } else {
+      a <- get_template_library(uuid_admin$uuid)
+      return(a)
+    }
+  }
+}
+
+#* Fetch template details
+#* @post /templateDetails
+#* @param templateId
+templateDetails <- function(templateId, req, res) {
+  ### check for valid session in request cookies
+  session <- req$cookies$session
+  if (is.null(session)) {
+    res$status <- 302
+    res$setHeader("Location", "/login.html")
+    return(res)
+  } else {
+    uuid_admin <- check_session(session)
+    if (length(uuid_admin) == 1) {
+      res$status <- 302
+      res$setHeader("Location", "/login.html")
+      return(res)
+    } else {
+      a <- get_template_details(templateId)
+      return(a)
     }
   }
 }

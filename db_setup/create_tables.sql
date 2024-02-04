@@ -24,8 +24,16 @@ session_token CHAR(64) NOT NULL,
 session_create_time TIMESTAMP NOT NULL
 );
 
+-- create video_library table
 CREATE TABLE IF NOT EXISTS video_library (
 video_id CHAR(16) PRIMARY KEY NOT NULL,
 video_title VARCHAR(255) NOT NULL,
 video_link VARCHAR(255) NOT NULL
+);
+
+-- create templates table
+CREATE TABLE IF NOT EXISTS templates (
+template_id CHAR(16) PRIMARY KEY NOT NULL,
+uuid_owner CHAR(36) NOT NULL,
+template_name VARCHAR(255) NOT NULL
 );
