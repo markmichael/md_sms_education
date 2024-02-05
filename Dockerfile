@@ -1,12 +1,11 @@
 # STAGE 1: renv-related code
-FROM rocker/r-base:latest AS base
+FROM rocker/r-ver:latest AS base
 
-RUN apt-get update
-RUN apt-get install -y libcurl4-openssl-dev 
-RUN apt-get install -y libz-dev
-RUN apt-get install -y libssl-dev
-RUN apt-get install -y libsodium-dev
-RUN apt-get install -y libpq-dev
+RUN apt update -qq \
+&& apt install -y pkg-config libpq5 libpq-dev unixodbc-dev libcurl4-openssl-dev libz-dev libssl-dev libsodium-dev \
+r-cran-rpostgresql \
+r-cran-plumber
+RUN apt -f install
 
 RUN R -e "install.packages('renv', repos = c(CRAN = 'https://cloud.r-project.org'))"
 WORKDIR /project
@@ -22,8 +21,7 @@ ENV RENV_PATHS_CACHE renv/.cache
 
 # restore 
 RUN R -e "renv::restore()"
-
-FROM rocker/r-base:latest
+FROM rocker/r-ver:latest
 
 WORKDIR /project
 COPY --from=base /project .
@@ -32,6 +30,13 @@ COPY backend/ ./backend
 COPY frontend/ ./frontend
 COPY db_setup/ ./db_setup
 COPY renv.lock renv.lock
-CMD R -e 'library(dbplyr);library(dplyr);lapply(system("ls /project/backend/functions/*.R", intern = TRUE), source); plumber::pr("/project/backend/api.R") |>plumber::pr_run(host = "0.0.0.0", port = 8000)'
+
+RUN apt-get update
+RUN apt install -y pkg-config 
+RUN apt install -y libpq5 
+run apt install -y libpq-dev 
+ENV LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}"
+
+CMD R -e 'library(dbplyr);library(dplyr);library(plumber);lapply(system("ls /project/backend/functions/*.R", intern = TRUE), source); pr("/project/backend/api.R") |> pr_run(host = "0.0.0.0", port = 8000)'
 
 EXPOSE 8000
