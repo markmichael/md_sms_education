@@ -1,10 +1,10 @@
 connect_db <- function() {
   con <- DBI::dbConnect(
     drv = RPostgres::Postgres(),
-    host = "localhost",
+    host = Sys.getenv("POSTGRES_HOST"),
     port = 5432,
-    dbname = "md_sms_db",
-    user = "postgres",
+    dbname = Sys.getenv("POSTGRES_DB"),
+    user = Sys.getenv("POSTGRES_USER"),
     password = Sys.getenv("POSTGRES_PASSWORD")
   )
   return(con)
