@@ -1,4 +1,4 @@
-create_user <- function(email_in, first_name, last_name, passwordhash, admin = FALSE) {
+create_user <- function(email_in, first_name, last_name, admin = FALSE) {
   email_in <- email_in |> tolower()
   ### connect to database
   con <- connect_db()
@@ -8,11 +8,6 @@ create_user <- function(email_in, first_name, last_name, passwordhash, admin = F
     collect() |>
     nrow()
   if (user_exist == 0) {
-    ### create auth hash
-    emailhash <- openssl::md5(email_in)
-    user_access_hash <- openssl::sha512(paste0(emailhash, passwordhash)) |>
-      as.character()
-
     ### generate uuid
     uuid <- paste0(
       stringi::stri_rand_strings(1, 8, pattern = "[0-9a-h]"),
@@ -40,16 +35,6 @@ create_user <- function(email_in, first_name, last_name, passwordhash, admin = F
         in_place = TRUE
       )
 
-    ### store user access hash in login table
-    tbl(con, in_schema("restricted", "login")) |>
-      rows_insert(
-        data.frame(
-          uuid = uuid,
-          user_access_hash = user_access_hash
-        ) |> copy_inline(con, df = _),
-        conflict = "ignore",
-        in_place = TRUE
-      )
     return("success")
   } else {
     return("email already in use")

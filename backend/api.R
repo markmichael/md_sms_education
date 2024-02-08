@@ -26,6 +26,14 @@ login_page <- function() {
   return(a)
 }
 
+#* set password page
+#* @get /newUser
+#* @serializer html
+set_password_page <- function() {
+  a <- readLines("../frontend/newUser.html") |> paste0(collapse = "")
+  return(a)
+}
+
 #* admin page
 #* @get /admin
 #* @serializer html
@@ -112,8 +120,7 @@ sendMessage <- function(toNumber, customMessage, videoSelection, req, res) {
 #* @param email
 #* @param firstName
 #* @param lastName
-#* @param password
-createUser <- function(email, firstName, lastName, password, admin, req, res) {
+createUser <- function(email, firstName, lastName, admin, req, res) {
   ### check for valid session in request cookies
   session <- req$cookies$session
   if (is.null(session)) {
@@ -129,13 +136,25 @@ createUser <- function(email, firstName, lastName, password, admin, req, res) {
       print("here i am")
       return(res)
     } else {
-      a <- create_user(email, firstName, lastName, password, admin)
+      a <- create_user(email, firstName, lastName, admin)
       session <- generate_session(uuid_admin$uuid)
       res$setCookie(name = "session", value = session, path = "/", http = TRUE)
       res$body <- a
       return(res)
     }
   }
+}
+
+#* Set password
+#* @post /setPassword
+#* @param email
+#* @param newPassword
+setPassword <- function(email, newPassword, req, res) {
+      a <- set_password(email, newPassword)
+## redirect to login
+  res$status <- 302
+  res$setHeader("Location", "/login")
+  return(res)
 }
 
 #* Login
@@ -153,6 +172,8 @@ login_user <- function(username, password, res) {
     res$setCookie(name = "session", value = session, path = "/", http = TRUE)
     res$status <- 302
     ### check if user is admin and redirect to admin page
+    print(uuid_admin)
+    print(uuid_admin$admin)
     if (uuid_admin$admin) {
       res$setHeader("Location", "/admin")
     } else {

@@ -9,9 +9,7 @@ userForm.addEventListener('submit', (event) => {
   const first_name = document.getElementById('first_name').value
   const last_name = document.getElementById('last_name').value
   const email = document.getElementById('email').value
-  const password = document.getElementById('password').value
   const admin = document.getElementById('admin').checked
-  const hashedPassword = md5(password)
   fetch('/createUser', {
     method: 'POST',
     headers: {
@@ -21,7 +19,6 @@ userForm.addEventListener('submit', (event) => {
       firstName: first_name,
       lastName: last_name,
       email: email,
-      password: hashedPassword,
       admin: admin
     })
   })

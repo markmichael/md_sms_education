@@ -25,7 +25,7 @@ FROM rocker/r-ver:latest
 
 WORKDIR /project
 COPY --from=base /project .
-COPY .Renviron .Renviron
+#COPY .Renviron .Renviron
 COPY backend/ ./backend
 COPY frontend/ ./frontend
 COPY db_setup/ ./db_setup
@@ -34,7 +34,9 @@ COPY renv.lock renv.lock
 RUN apt-get update
 RUN apt install -y pkg-config 
 RUN apt install -y libpq5 
-run apt install -y libpq-dev 
+RUN apt install -y libpq-dev 
+RUN apt install -y libsodium-dev
+
 ENV LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}"
 
 CMD R -e 'library(dbplyr);library(dplyr);library(plumber);lapply(system("ls /project/backend/functions/*.R", intern = TRUE), source); pr("/project/backend/api.R") |> pr_run(host = "0.0.0.0", port = 8000)'
