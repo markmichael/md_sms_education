@@ -11,6 +11,5 @@ send_message <- function(toNumber, fromNumber = "+15005550006", customMessage, v
     from = fromNumber,
     body = paste0(customMessage, " ", videoDescription, ": ", videoURL)
   )
-  print(twilio_response)
   return("success")
 }
