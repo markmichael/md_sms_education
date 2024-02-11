@@ -2,7 +2,8 @@
 .Rhistory
 .Rapp.history
 Dockerfile_prod
-certbot/
+
+certbot*
 # Session Data files
 .RData
 .RDataTmp
