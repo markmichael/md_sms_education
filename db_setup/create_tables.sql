@@ -41,10 +41,11 @@ template_name VARCHAR(255) NOT NULL
 -- create messages table
 CREATE TABLE IF NOT EXISTS messages (
 message_id CHAR(34) PRIMARY KEY NOT NULL,
+time_stamp TIMESTAMP NOT NULL,
 uuid CHAR(36) NOT NULL,
 origin_number CHAR(12) NOT NULL,
 destination_number CHAR(12) NOT NULL,
-message_text TEXT NOT NULL,
+message_text TEXT ,
 asset_type VARCHAR(24),
 asset_id CHAR(16)
 );
