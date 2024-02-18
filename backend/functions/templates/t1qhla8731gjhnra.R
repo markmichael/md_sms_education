@@ -43,10 +43,10 @@ message <- paste0(
   (template_parameters$Time |>
    strptime("%H:%M") - 60 * 60) |>
     strftime("%H:%M"),
-  ".\n",
-  "Here is a video on how to prepare for the surgery:\n",
+  ".\n\n",
+  "Here is a video on how to prepare for the surgery:\n\n",
   videoURL1,
-  "\nPlease contact our office at ",
+  "\n\nPlease contact our office at ",
   template_parameters$Phone,
   " if you have any questions."
 )

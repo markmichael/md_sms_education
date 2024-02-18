@@ -1,6 +1,6 @@
 template_parameters <- list(
   Preview = paste0(
-    "Your child is scheduled for surgery with [Surgeon] at [Location] on [Date] at [Time]. Please arrive at [Time - 1 hr].\n",
+    "Your child is scheduled for surgery with [Provider] at [Location] on [Date] at [Time]. Please arrive at [Time - 1 hr].\n",
     "Here is a video on how to prepare for the surgery:\n",
     "[videos1]\n",
     "Here is a video on what to expect afer surgery:\n",
@@ -51,12 +51,12 @@ message <- paste0(
   (template_parameters$Time |>
    strptime("%H:%M") - 60 * 60) |>
     strftime("%H:%M"),
-  ".\n",
-  "Here is a video on how to prepare for the surgery:\n",
+  ".\n\n",
+  "Here is a video on how to prepare for the surgery:\n\n",
   videoURL1,
-  "\nHere is a video on what to expect afer surgery:\n",
+  "\n\nHere is a video on what to expect afer surgery:\n\n",
   videoURL2,
-  "\nPlease contact our office at ",
+  "\n\nPlease contact our office at ",
   template_parameters$Phone,
   " if you have any questions."
 )
