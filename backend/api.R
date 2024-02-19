@@ -173,12 +173,27 @@ login_user <- function(username, password, res) {
     res$status <- 302
     ### check if user is admin and redirect to admin page
     print(uuid_admin)
-    print(uuid_admin$admin)
     if (uuid_admin$admin) {
       res$setHeader("Location", "/admin")
     } else {
       res$setHeader("Location", "/messagePortal")
     }
+    return(res)
+  }
+}
+
+#* Logout
+#* @get /logout
+logout <- function(req, res) {
+  session <- req$cookies$session
+  if (is.null(session)) {
+    res$status <- 302
+    res$setHeader("Location", "/login")
+    return(res)
+  } else {
+    a <- logout(session)
+    res$status <- 302
+    res$setHeader("Location", "/login")
     return(res)
   }
 }
