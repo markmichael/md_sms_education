@@ -74,7 +74,7 @@ user_page <- function(req, res) {
       res$setHeader("Location", "/login")
       return(res)
     } else {
-      a <- readLines("../frontend/index") |> paste0(collapse = "")
+      a <- readLines("../frontend/index.html") |> paste0(collapse = "")
       return(a)
     }
   }
