@@ -3,13 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <title>SMS Web App</title>
+    <link rel="stylesheet" href="stylesheet.css" />
     <!-- <link rel="stylesheet" href="styles.css" /> -->
   </head>
   <body>
-    <div id="root">
-      <h1>SMS Web App</h1>
+      <div class = "tab" id = "tabMessages">Send Mesages</div>
+      <div class = "tab" id = "tabTemplates">Send Templated Messages</div>
+    <div class = "tabContent" id="contentMessages">
+      <h1>Send Simple SMS</h1>
       <!--4 fields for to number, message and link and send button-->
-      <form>
+      <form id = "sendMessage">
         <label for="to">To:</label>
         <input type="tel" id="to" pattern="[0-9]{10}" />
         <label for="message">Message:</label>
@@ -18,6 +21,13 @@
         <select id="link"></select>
         <button type="submit">Send</button>
       </form>
+    </div>
+    <div class = "tabContent" id="contentTemplates">
+      <h1>Send Templated SMS</h1>
+      <form id = "sendTemplate">
+      </form>
+      <h3>Template Preview</h3>
+      <div id = "preview"></div>
     </div>
     <script src="main.js"></script>
   </body>
