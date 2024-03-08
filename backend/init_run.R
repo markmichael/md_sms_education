@@ -13,3 +13,5 @@ mark_uuid <- tbl(con, in_schema("restricted", "user")) |>
 dbSendQuery(con, paste0("ALTER TABLE video_library ",
                         "ADD COLUMN owner_uuid CHAR(36) NOT NULL",
                         " DEFAULT '", mark_uuid$uuid, "'"))
+
+rm(mark_uuid)

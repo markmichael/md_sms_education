@@ -1,7 +1,10 @@
 // when submit button is clicked submit on the first form post call to create new user
 // when submit button is clicked submit on the second form post call to add new video
 
-
+const logoutBtn = document.getElementById('logoutBtn')
+logoutBtn.addEventListener('click', () => {
+  window.location.href = '/logout'
+})
 
 const userForm = document.querySelector('#createUser')
 userForm.addEventListener('submit', (event) => {

@@ -1,7 +1,7 @@
 add_video <- function(video_title_in, video_link_in, email_in) {
   con <- connect_db()
   ### get uuid of email_in
-  uuid <- tbl(con, in_schema("restricted", "users")) |>
+  uuid <- tbl(con, in_schema("restricted", "user")) |>
     filter(email == email_in) |>
     select(uuid) |>
     collect()

@@ -61,7 +61,7 @@ admin_page <- function(req, res) {
   }
 }
 
-#* owner selection list 
+#* owner selection list
 #* @get /userList
 userList <- function(req, res) {
   ### check for valid session in request cookies
@@ -77,6 +77,7 @@ userList <- function(req, res) {
       res$setHeader("Location", "/login")
       return(res)
     } else {
+      print("here I am")
       a <- get_user_list()
       return(a)
     }
@@ -109,7 +110,7 @@ user_page <- function(req, res) {
 
 #* Get Video List
 #* @get /videoList
-videoList <- function() {
+videoList <- function(req) {
   session <- req$cookies$session
   if (is.null(session)) {
     res$status <- 302
@@ -237,7 +238,8 @@ logout <- function(req, res) {
 #* @post /addVideo
 #* @param videoName
 #* @param videoLink
-addVideo <- function(videoName, videoLink, req, res) {
+#* @param ownerEmail
+addVideo <- function(videoName, videoLink, ownerEmail, req, res) {
   ### check for valid session in request cookies
   session <- req$cookies$session
   if (is.null(session)) {
@@ -251,7 +253,7 @@ addVideo <- function(videoName, videoLink, req, res) {
       res$setHeader("Location", "/login.html")
       return(res)
     } else {
-      a <- add_video(videoName, videoLink)
+      a <- add_video(videoName, videoLink, ownerEmail)
       res$body <- a
       return(res)
     }

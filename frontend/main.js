@@ -1,4 +1,8 @@
 // fetch video list
+const logoutButton = document.getElementById('logout')
+logoutButton.addEventListener('click', () => {
+  window.location.href = '/logout'
+})
 
   fetch('videoList')
     .then(response => response.json())
