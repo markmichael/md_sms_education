@@ -1,5 +1,5 @@
 // fetch video list
-const logoutButton = document.getElementById('logout')
+const logoutButton = document.getElementById('logoutBtn')
 logoutButton.addEventListener('click', () => {
   window.location.href = '/logout'
 })
