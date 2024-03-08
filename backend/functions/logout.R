@@ -1,10 +1,9 @@
 logout <- function(session) {
   con <- connect_db()
 
-  remove_session <- tbl(con, in_schema("restricted", "session")) |>
-    rows_delete(copy_inline(con, data.frame(session_token = session)),
-    in_place = TRUE,
-    by = "session_token",
-    unmatched = "ignore")
+  remove_session <- DBI::dbExecute(
+    con,
+    paste0("DELETE FROM sessions WHERE session = '", session, "'")
+  )
   return("logout successful")
 }
