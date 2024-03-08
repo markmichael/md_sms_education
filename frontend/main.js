@@ -1,8 +1,5 @@
+
 // fetch video list
-const logoutButton = document.getElementById('logoutBtn')
-logoutButton.addEventListener('click', () => {
-  window.location.href = '/logout'
-})
 
   fetch('videoList')
     .then(response => response.json())
@@ -273,6 +270,11 @@ document.addEventListener('DOMContentLoaded', function () {
         contentToShow.style.display = 'block';
         tabToHighlight.classList.add('active');
     }
+
+const logoutButton = document.getElementById('logoutBtn')
+logoutButton.addEventListener('click', () => {
+  window.location.href = '/logout'
+})
 
     // Show the default tab on page load
     showTab('Templates');
