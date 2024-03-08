@@ -77,7 +77,6 @@ userList <- function(req, res) {
       res$setHeader("Location", "/login")
       return(res)
     } else {
-      print("here I am")
       a <- get_user_list()
       return(a)
     }
@@ -220,8 +219,8 @@ login_user <- function(username, password, res) {
 
 #* Logout
 #* @get /logout
-logout <- function(req, res) {
-  session <- req$cookies$session
+logout_user <- function(req, res) {
+  session <- req$cookies["session"]
   if (is.null(session)) {
     res$status <- 302
     res$setHeader("Location", "/login")
