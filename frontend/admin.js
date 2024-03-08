@@ -32,12 +32,27 @@ userForm.addEventListener('submit', (event) => {
       console.log(data)
     })
 })
+//fetch user email list and append to owner_email
+fetch('userList')
+  .then(response => response.json())
+  .then(data => {
+    // append options to link select with id in the value and description in the text
+    const emailSelect = document.getElementById('owner_email')
+    emailSelect.innerHTML = ''
+    for (const email in data) {
+      const option = document.createElement('option')
+      option.value = data[email]['email']
+      option.text = data[email]['email']
+      emailSelect.appendChild(option)
+    }
+  })
 
 const videoForm = document.querySelector('#addVideo')
 videoForm.addEventListener('submit', (event) => {
   event.preventDefault()
   const name = document.getElementById('name').value
   const videolink = document.getElementById('videolink').value
+  const owner_email = document.getElementById('owner_email').value
   fetch('/addVideo', {
     method: 'POST',
     headers: {
@@ -45,7 +60,8 @@ videoForm.addEventListener('submit', (event) => {
     },
     body: JSON.stringify({
       videoName: name,
-      videoLink: videolink
+      videoLink: videolink,
+      ownerEmail: owner_email
     })
   })
     .then(response => {

@@ -28,7 +28,8 @@ session_create_time TIMESTAMP NOT NULL
 CREATE TABLE IF NOT EXISTS video_library (
 video_id CHAR(16) PRIMARY KEY NOT NULL,
 video_title VARCHAR(255) NOT NULL,
-video_link VARCHAR(255) NOT NULL
+video_link VARCHAR(255) NOT NULL,
+owner_uuid CHAR(36) NOT NULL
 );
 
 -- create templates table

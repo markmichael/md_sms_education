@@ -1,6 +1,7 @@
-get_video_library <- function() {
+get_video_library <- function(uuid_in) {
   con <- connect_db()
   response <- tbl(con, "video_library") |>
+    filter(uuid == uuid_in) |>
     select(video_id,video_title) |>
     collect() |>
     setNames(c("videoID", "videoDescription")) |>

@@ -46,7 +46,11 @@ admin_page <- function(req, res) {
     return(res)
   } else {
     uuid_admin <- check_session(session)
-    if (length(uuid_admin) == 1 || !uuid_admin$admin) {
+    if (length(uuid_admin) == 1) {
+      res$status <- 302
+      res$setHeader("Location", "/login")
+      return(res)
+    } else if (!uuid_admin$admin) {
       res$status <- 302
       res$setHeader("Location", "/login")
       return(res)
@@ -56,6 +60,29 @@ admin_page <- function(req, res) {
     }
   }
 }
+
+#* owner selection list 
+#* @get /userList
+userList <- function(req, res) {
+  ### check for valid session in request cookies
+  session <- req$cookies$session
+  if (is.null(session)) {
+    res$status <- 302
+    res$setHeader("Location", "/login")
+    return(res)
+  } else {
+    uuid_admin <- check_session(session)
+    if (length(uuid_admin) == 1) {
+      res$status <- 302
+      res$setHeader("Location", "/login")
+      return(res)
+    } else {
+      a <- get_user_list()
+      return(a)
+    }
+  }
+}
+
 
 #* Get regular user page
 #* @get /messagePortal
@@ -83,7 +110,15 @@ user_page <- function(req, res) {
 #* Get Video List
 #* @get /videoList
 videoList <- function() {
-  video_list <- get_video_library()
+  session <- req$cookies$session
+  if (is.null(session)) {
+    res$status <- 302
+    res$setHeader("Location", "/login")
+    return(res)
+  } else {
+    uuid_admin <- check_session(session)
+  }
+  video_list <- get_video_library(uuid_admin$uuid)
   video_list
 }
 
@@ -150,8 +185,8 @@ createUser <- function(email, firstName, lastName, admin, req, res) {
 #* @param email
 #* @param newPassword
 setPassword <- function(email, newPassword, req, res) {
-      a <- set_password(email, newPassword)
-## redirect to login
+  a <- set_password(email, newPassword)
+  ## redirect to login
   res$status <- 302
   res$setHeader("Location", "/login")
   return(res)
