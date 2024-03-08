@@ -271,10 +271,10 @@ document.addEventListener('DOMContentLoaded', function () {
         tabToHighlight.classList.add('active');
     }
 
-// const logoutButton = document.getElementById('logoutBtn')
-// logoutButton.addEventListener('click', () => {
-//   window.location.href = '/logout'
-// })
+const logoutButton = document.getElementById('logout')
+logoutButton.addEventListener('click', () => {
+  window.location.href = '/logout'
+})
 
     // Show the default tab on page load
     showTab('Templates');
